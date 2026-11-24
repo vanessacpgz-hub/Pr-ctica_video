@@ -18,7 +18,7 @@ class TwoPaneScene<T : Any>(
     val secondEntry: NavEntry<T>
 ) : Scene<T> {
     override val entries: List<NavEntry<T>> = listOf(firstEntry, secondEntry)
-    override val content: @Composable (() -> Unit) = {
+    override val content: @Composable () -> Unit = {
         Row(modifier = Modifier.fillMaxSize()) {
             Box(modifier = Modifier.weight(1f)) {
                 firstEntry.content(firstEntry.key)
@@ -56,7 +56,7 @@ class TwoPaneSceneStrategy<T : Any> : SceneStrategy<T> {
 
             TwoPaneScene(
                 key = firstEntry.key to secondEntry.key,
-                previousEntries = entries.dropLast(1),
+                previousEntries = entries.dropLast(2),
                 firstEntry = firstEntry,
                 secondEntry = secondEntry
             )

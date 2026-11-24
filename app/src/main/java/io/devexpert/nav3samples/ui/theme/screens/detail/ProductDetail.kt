@@ -73,7 +73,7 @@ fun ProductDetailScreen(
                     if (state.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            color = MaterialTheme.colorScheme.onPrimary,
+                            color = MaterialTheme.colorScheme.primary,
                             strokeWidth = 2.dp
                         )
                     }
@@ -83,54 +83,59 @@ fun ProductDetailScreen(
         modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        when {
-            state.isLoading && state.product == null -> {
-                // Full screen loading
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            state.product == null -> {
-                // Error state
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            when {
+                state.isLoading && state.product == null -> {
+                    // Full screen loading
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "No se pudo cargar el producto",
-                            style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        IconButton(
-                            onClick = { /* TODO: Implement retry */ },
-                            modifier = Modifier.padding(8.dp)
+                        CircularProgressIndicator()
+                    }
+                }
+
+                state.product == null -> {
+                    // Error state
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Refresh,
-                                contentDescription = "Reintentar"
+                            Text(
+                                text = "No se pudo cargar el producto",
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center
                             )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            IconButton(
+                                onClick = { viewModel.retry() },
+                                modifier = Modifier.padding(8.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = "Reintentar"
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            else -> {
-                // Show product details
-                ProductDetailContent(
-                    product = state.product,
-                    modifier = Modifier.padding(innerPadding)
-                )
+                else -> {
+                    // Show product details
+                    ProductDetailContent(
+                        product = state.product
+                    )
+                }
             }
         }
     }

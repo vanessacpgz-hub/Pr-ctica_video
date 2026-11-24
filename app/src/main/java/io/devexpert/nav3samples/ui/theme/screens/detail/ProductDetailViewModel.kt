@@ -15,14 +15,18 @@ data class ProductDetailState(
 )
 
 class ProductDetailViewModel(
-    productId: Int,
+    private val productId: Int,
 ) : BaseViewModel<ProductDetailState>(ProductDetailState()) {
 
     init {
-        loadProduct(productId)
+        loadProduct()
     }
 
-    private fun loadProduct(productId: Int) {
+    fun retry() {
+        loadProduct()
+    }
+
+    private fun loadProduct() {
         updateState { copy(isLoading = true, error = null) }
         
         // Simulate network/database call

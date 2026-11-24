@@ -3,6 +3,7 @@ package io.devexpert.nav3samples.ui.theme.screens
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -55,11 +56,15 @@ fun Navigation() {
             entry<Home>(
                 metadata = ListDetailSceneStrategy.listPane(
                     detailPlaceholder = {
-                        Text(
-                            text = "Choose a product from the list",
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Choose a product from the list",
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 )
             ) {
@@ -73,7 +78,9 @@ fun Navigation() {
                 metadata = ListDetailSceneStrategy.detailPane()
             ) { key ->
                 ProductDetailScreen(
-                    viewModel = viewModel { ProductDetailViewModel(key.productId) },
+                    viewModel = viewModel(key = key.productId.toString()) {
+                        ProductDetailViewModel(key.productId)
+                    },
                     onBackClick = {
                         backStack.removeLastOrNull()
                     }

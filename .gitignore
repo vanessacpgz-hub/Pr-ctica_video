@@ -9,3 +9,10 @@
 .cxx
 local.properties
 /.kotlin
+.tmp/
+caches/
+daemon/
+kotlin-profile/
+native/
+wrapper/
+android/

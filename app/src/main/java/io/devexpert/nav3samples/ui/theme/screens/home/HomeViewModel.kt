@@ -45,4 +45,8 @@ class HomeViewModel() : BaseViewModel<HomeState>(HomeState()) {
     fun refresh() {
         loadProducts()
     }
+
+    fun clearError() {
+        updateState { copy(error = null) }
+    }
 }

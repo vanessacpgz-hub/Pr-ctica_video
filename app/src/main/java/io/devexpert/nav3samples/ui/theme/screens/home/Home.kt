@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -56,12 +57,15 @@ fun Home(
     // Show error message if there's an error
     LaunchedEffect(state.error) {
         state.error?.let { error ->
-            snackbarHostState.showSnackbar(
+            val result = snackbarHostState.showSnackbar(
                 message = error,
                 actionLabel = "Retry"
             )
-            // Clear the error after showing the snackbar
-            viewModel.refresh()
+            if (result == SnackbarResult.ActionPerformed) {
+                viewModel.refresh()
+            } else {
+                viewModel.clearError()
+            }
         }
     }
 
@@ -73,7 +77,7 @@ fun Home(
                     if (state.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = MaterialTheme.colorScheme.primary
                         )
                     } else {
                         IconButton(onClick = { viewModel.refresh() }) {
